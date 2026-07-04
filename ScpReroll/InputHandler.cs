@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 
@@ -13,11 +14,15 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(sender);
+            string logName = sender.LogName;
+
+            Player player = Player.List.FirstOrDefault(p =>
+                logName.Contains(p.Nickname) ||
+                logName.Contains(p.UserId.Replace("@steam", "")));
 
             if (player == null)
             {
-                response = "Only players can use this command.";
+                response = "Player not found: " + logName;
                 return false;
             }
 
