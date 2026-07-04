@@ -31,14 +31,10 @@ namespace ScpReroll
 
         public void OnSpawn(Player player)
         {
-            if (player == null)
-                return;
-
-            if (player.Role.Team != Team.SCPs)
+            if (player == null || !Plugin.Instance.Config.AllowedScps.Contains(player.Role.Type))
                 return;
 
             spawnTimes[player] = DateTime.Now;
-
             Timing.RunCoroutine(CountdownHint(player));
         }
 
@@ -59,9 +55,9 @@ namespace ScpReroll
             if (rollingPlayers.Contains(player))
                 return false;
 
-            if (player.Role.Team != Team.SCPs)
+            if (!Plugin.Instance.Config.AllowedScps.Contains(player.Role.Type))
             {
-                player.ShowHint("You are not an SCP.", 2f);
+                player.ShowHint("You are not allowed to reroll.", 2f);
                 return false;
             }
 
@@ -106,16 +102,8 @@ namespace ScpReroll
         {
             return Plugin.Instance.Config.AllowedScps
                 .Where(role => role != currentRole)
-                .Where(role => !IsRoleAlive(role))
+                .Where(role => !Utils.IsRoleAlive(role))
                 .ToList();
-        }
-
-        private bool IsRoleAlive(RoleTypeId role)
-        {
-            return Player.List.Any(player =>
-                player != null &&
-                player.IsAlive &&
-                player.Role.Type == role);
         }
 
         private IEnumerator<float> RerollRoutine(Player player, RoleTypeId newRole)
@@ -144,7 +132,7 @@ namespace ScpReroll
         {
             while (player != null &&
                    player.IsAlive &&
-                   player.Role.Team == Team.SCPs &&
+                   Plugin.Instance.Config.AllowedScps.Contains(player.Role.Type) &&
                    spawnTimes.ContainsKey(player))
             {
                 double elapsed = (DateTime.Now - spawnTimes[player]).TotalSeconds;
@@ -156,7 +144,10 @@ namespace ScpReroll
                 if (!rollingPlayers.Contains(player) &&
                     !(Plugin.Instance.Config.OneRerollPerRound && usedReroll.Contains(player)))
                 {
-                    player.ShowHint($"Press [{Plugin.Instance.Config.ActivationKeyName}] to reroll your SCP.\n{remaining}s remaining.", 1.1f);
+                    player.ShowHint(
+                        $"Type <b>.reroll</b> to reroll your SCP.\nYou can bind it in console.\n{remaining}s remaining.",
+                        1.1f
+                    );
                 }
 
                 yield return Timing.WaitForSeconds(1f);
