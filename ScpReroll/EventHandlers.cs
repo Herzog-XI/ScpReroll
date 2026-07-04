@@ -1,4 +1,6 @@
+using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Handlers;
+using PlayerRoles;
 
 namespace ScpReroll
 {
@@ -6,38 +8,47 @@ namespace ScpReroll
     {
         public void Register()
         {
-            Player.Spawned += OnPlayerSpawned;
-            Player.Dying += OnPlayerDying;
+            Player.ChangingRole += OnChangingRole;
+            Player.Dying += OnDying;
             Server.RoundStarted += OnRoundStarted;
-            Server.RestartingRound += OnRoundRestarting;
+            Server.RestartingRound += OnRestartingRound;
         }
 
         public void Unregister()
         {
-            Player.Spawned -= OnPlayerSpawned;
-            Player.Dying -= OnPlayerDying;
+            Player.ChangingRole -= OnChangingRole;
+            Player.Dying -= OnDying;
             Server.RoundStarted -= OnRoundStarted;
-            Server.RestartingRound -= OnRoundRestarting;
+            Server.RestartingRound -= OnRestartingRound;
         }
 
-        private void OnPlayerSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
+        private void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            Plugin.Instance.RerollManager.OnSpawn(ev.Player);
+            if (ev.Player == null)
+                return;
+
+            if (!ev.IsAllowed)
+                return;
+
+            if (!Plugin.Instance.Config.AllowedScps.Contains(ev.NewRole))
+                return;
+
+            Plugin.Instance.RerollManager.OnScpAssigned(ev.Player, ev.NewRole);
         }
 
-        private void OnPlayerDying(Exiled.Events.EventArgs.Player.DyingEventArgs ev)
+        private void OnDying(DyingEventArgs ev)
         {
             Plugin.Instance.RerollManager.OnDeath(ev.Player);
         }
 
         private void OnRoundStarted()
         {
-            Plugin.Instance.RerollManager.OnRoundStarted();
+            Plugin.Instance.RerollManager.Reset();
         }
 
-        private void OnRoundRestarting()
+        private void OnRestartingRound()
         {
-            Plugin.Instance.RerollManager.OnRoundEnded();
+            Plugin.Instance.RerollManager.Reset();
         }
     }
 }
