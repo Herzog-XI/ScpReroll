@@ -14,11 +14,14 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            string logName = sender.LogName;
+            string logName = sender.LogName ?? string.Empty;
 
             Player player = Player.List.FirstOrDefault(p =>
-                logName.Contains(p.Nickname) ||
-                logName.Contains(p.UserId.Replace("@steam", "")));
+                p != null &&
+                (
+                    (!string.IsNullOrEmpty(p.Nickname) && logName.Contains(p.Nickname)) ||
+                    (!string.IsNullOrEmpty(p.UserId) && logName.Contains(p.UserId.Replace("@steam", "")))
+                ));
 
             if (player == null)
             {
