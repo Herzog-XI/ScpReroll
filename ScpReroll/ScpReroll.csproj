@@ -16,4 +16,21 @@
     <PackageReference Include="EXILED" Version="9.0.0-beta.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Mirror">
+      <HintPath>$(NuGetPackageRoot)exiled\9.0.0-beta.5\lib\net48\Mirror.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(NuGetPackageRoot)exiled\9.0.0-beta.5\lib\net48\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(NuGetPackageRoot)exiled\9.0.0-beta.5\lib\net48\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>
