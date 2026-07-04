@@ -1,7 +1,6 @@
 using System;
 using CommandSystem;
 using Exiled.API.Features;
-using RemoteAdmin;
 
 namespace ScpReroll
 {
@@ -14,17 +13,11 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender is PlayerCommandSender playerSender))
-            {
-                response = "Only players can use this command.";
-                return false;
-            }
-
-            Player player = Player.Get(playerSender.ReferenceHub);
+            Player player = Player.Get(sender);
 
             if (player == null)
             {
-                response = "Player not found.";
+                response = "Only players can use this command.";
                 return false;
             }
 
