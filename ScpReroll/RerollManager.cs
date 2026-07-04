@@ -96,7 +96,7 @@ namespace ScpReroll
                 return false;
             }
 
-            RoleTypeId newRole = options[UnityEngine.Random.Range(0, options.Count)];
+            RoleTypeId newRole = options[new Random().Next(options.Count)];
 
             usedReroll.Add(player);
             rollingPlayers.Add(player);
