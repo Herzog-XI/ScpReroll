@@ -6,17 +6,6 @@ namespace ScpReroll
 {
     public static class Utils
     {
-        public static bool IsScp(RoleTypeId role)
-        {
-            return role is RoleTypeId.Scp049
-                or RoleTypeId.Scp079
-                or RoleTypeId.Scp096
-                or RoleTypeId.Scp106
-                or RoleTypeId.Scp173
-                or RoleTypeId.Scp939
-                or RoleTypeId.Scp3114;
-        }
-
         public static bool IsRoleAlive(RoleTypeId role)
         {
             return Player.List.Any(player =>
