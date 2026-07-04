@@ -29,10 +29,7 @@ namespace ScpReroll
 
             bool success = Plugin.Instance.RerollManager.TryReroll(player);
 
-            response = success
-                ? "Rerolling..."
-                : "You cannot reroll.";
-
+            response = success ? "Rerolling..." : "You cannot reroll.";
             return success;
         }
     }
