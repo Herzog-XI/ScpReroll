@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 
@@ -13,7 +14,7 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(sender);
+            Player player = Player.List.FirstOrDefault(p => p.UserId == sender.SenderId);
 
             if (player == null)
             {
