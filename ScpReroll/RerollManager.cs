@@ -137,7 +137,7 @@ namespace ScpReroll
             rollingPlayers.Remove(player);
             spawnTimes.Remove(player);
 
-            player.ShowHint($"<b>You rerolled into {newRole}</b>", 3f);
+            player.ShowHint($"<b>You rerolled into {Utils.GetScpName(newRole)}</b>", 3f);
         }
 
         private IEnumerator<float> CountdownHint(Player player)
