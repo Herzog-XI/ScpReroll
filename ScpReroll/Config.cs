@@ -16,16 +16,19 @@ namespace ScpReroll
         [Description("Seconds after spawning that reroll is allowed.")]
         public float RerollWindow { get; set; } = 10f;
 
-        [Description("Duration of the blackout/freeze animation.")]
+        [Description("Length of the blackout/freeze animation.")]
         public float AnimationTime { get; set; } = 1.2f;
 
         [Description("Allow only one reroll per round.")]
         public bool OneRerollPerRound { get; set; } = true;
 
-        [Description("Key shown to players. Default is H.")]
-        public string ActivationKeyName { get; set; } = "H";
+        [Description("Command shown to players.")]
+        public string RerollCommand { get; set; } = ".reroll";
 
-        [Description("Roles that can be rerolled into.")]
+        [Description("Show reroll hint after spawning.")]
+        public bool ShowHint { get; set; } = true;
+
+        [Description("SCPs that may reroll.")]
         public List<RoleTypeId> AllowedScps { get; set; } = new()
         {
             RoleTypeId.Scp049,
