@@ -29,7 +29,7 @@ namespace ScpReroll
         public bool ShowHint { get; set; } = true;
 
         [Description("Allowed SCPs.")]
-        public List<RoleTypeId> AllowedScps { get; set; } = new()
+        public List<RoleTypeId> AllowedScps { get; set; } = new List<RoleTypeId>
         {
             RoleTypeId.Scp049,
             RoleTypeId.Scp079,
