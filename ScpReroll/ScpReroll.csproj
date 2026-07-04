@@ -9,6 +9,7 @@
     <Authors>Oliver</Authors>
     <Description>SCP reroll plugin for SCP: Secret Laboratory</Description>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
