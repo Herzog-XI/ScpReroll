@@ -16,17 +16,15 @@ namespace ScpReroll
 
         public static string GetScpName(RoleTypeId role)
         {
-            return role switch
-            {
-                RoleTypeId.Scp049 => "SCP-049",
-                RoleTypeId.Scp079 => "SCP-079",
-                RoleTypeId.Scp096 => "SCP-096",
-                RoleTypeId.Scp106 => "SCP-106",
-                RoleTypeId.Scp173 => "SCP-173",
-                RoleTypeId.Scp939 => "SCP-939",
-                RoleTypeId.Scp3114 => "SCP-3114",
-                _ => role.ToString()
-            };
+            if (role == RoleTypeId.Scp049) return "SCP-049";
+            if (role == RoleTypeId.Scp079) return "SCP-079";
+            if (role == RoleTypeId.Scp096) return "SCP-096";
+            if (role == RoleTypeId.Scp106) return "SCP-106";
+            if (role == RoleTypeId.Scp173) return "SCP-173";
+            if (role == RoleTypeId.Scp939) return "SCP-939";
+            if (role == RoleTypeId.Scp3114) return "SCP-3114";
+
+            return role.ToString();
         }
     }
 }
