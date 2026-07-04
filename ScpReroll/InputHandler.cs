@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using CommandSystem;
 using Exiled.API.Features;
 
@@ -14,7 +15,9 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.List.FirstOrDefault(p => p.UserId == sender.SenderId);
+            string senderId = GetSenderId(sender);
+
+            Player player = Player.List.FirstOrDefault(p => p.UserId == senderId);
 
             if (player == null)
             {
@@ -26,6 +29,19 @@ namespace ScpReroll
 
             response = success ? "Rerolling..." : "You cannot reroll.";
             return success;
+        }
+
+        private static string GetSenderId(ICommandSender sender)
+        {
+            PropertyInfo senderIdProperty = sender.GetType().GetProperty("SenderId");
+            if (senderIdProperty != null)
+                return senderIdProperty.GetValue(sender) as string;
+
+            PropertyInfo userIdProperty = sender.GetType().GetProperty("UserId");
+            if (userIdProperty != null)
+                return userIdProperty.GetValue(sender) as string;
+
+            return null;
         }
     }
 }
