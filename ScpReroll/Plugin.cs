@@ -1,5 +1,6 @@
 using System;
 using Exiled.API.Features;
+using HarmonyLib;
 
 namespace ScpReroll
 {
@@ -15,6 +16,8 @@ namespace ScpReroll
         public EventHandlers EventHandlers { get; private set; }
         public RerollManager RerollManager { get; private set; }
 
+        private Harmony harmony;
+
         public override void OnEnabled()
         {
             Instance = this;
@@ -24,11 +27,17 @@ namespace ScpReroll
 
             EventHandlers.Register();
 
+            harmony = new Harmony("oliver.scpreroll");
+            harmony.PatchAll();
+
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
+            harmony?.UnpatchAll("oliver.scpreroll");
+            harmony = null;
+
             EventHandlers?.Unregister();
 
             EventHandlers = null;
