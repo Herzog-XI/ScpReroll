@@ -14,33 +14,24 @@ namespace ScpReroll
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string logName = sender.LogName ?? string.Empty;
-            Player foundPlayer = null;
 
-            foreach (Player player in Player.List)
+            string playerId = logName;
+
+            int start = logName.IndexOf('(');
+            int end = logName.IndexOf(')');
+
+            if (start >= 0 && end > start)
+                playerId = logName.Substring(start + 1, end - start - 1);
+
+            Player player = Player.Get(playerId);
+
+            if (player == null)
             {
-                if (player == null)
-                    continue;
-
-                if (!string.IsNullOrEmpty(player.UserId) && logName.Contains(player.UserId.Replace("@steam", "")))
-                {
-                    foundPlayer = player;
-                    break;
-                }
-
-                if (!string.IsNullOrEmpty(player.Nickname) && logName.Contains(player.Nickname))
-                {
-                    foundPlayer = player;
-                    break;
-                }
-            }
-
-            if (foundPlayer == null)
-            {
-                response = "Player not found: " + logName;
+                response = "Player not found: " + playerId;
                 return false;
             }
 
-            bool success = Plugin.Instance.RerollManager.TryReroll(foundPlayer);
+            bool success = Plugin.Instance.RerollManager.TryReroll(player);
 
             response = success ? "Rerolling..." : "You cannot reroll.";
             return success;
