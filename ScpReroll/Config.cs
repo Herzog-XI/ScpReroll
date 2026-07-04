@@ -10,25 +10,25 @@ namespace ScpReroll
         [Description("Enable or disable the plugin.")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Enable debug logging.")]
+        [Description("Enable debug messages.")]
         public bool Debug { get; set; } = false;
 
-        [Description("Seconds after spawning that reroll is allowed.")]
-        public float RerollWindow { get; set; } = 10f;
+        [Description("How many seconds after spawning an SCP can reroll.")]
+        public float RerollTime { get; set; } = 10f;
 
-        [Description("Length of the blackout/freeze animation.")]
+        [Description("How long the blackout animation lasts.")]
         public float AnimationTime { get; set; } = 1.2f;
 
-        [Description("Allow only one reroll per round.")]
+        [Description("Only allow one reroll per round.")]
         public bool OneRerollPerRound { get; set; } = true;
 
-        [Description("Command shown to players.")]
-        public string RerollCommand { get; set; } = ".reroll";
+        [Description("Command players use.")]
+        public string CommandName { get; set; } = "reroll";
 
-        [Description("Show reroll hint after spawning.")]
+        [Description("Show reroll hint.")]
         public bool ShowHint { get; set; } = true;
 
-        [Description("SCPs that may reroll.")]
+        [Description("Allowed SCPs.")]
         public List<RoleTypeId> AllowedScps { get; set; } = new()
         {
             RoleTypeId.Scp049,
