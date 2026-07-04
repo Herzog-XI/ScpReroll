@@ -9,9 +9,9 @@ namespace ScpReroll
 {
     public class RerollManager
     {
-        private readonly Dictionary<Player, DateTime> spawnTimes = new();
-        private readonly HashSet<Player> usedReroll = new();
-        private readonly HashSet<Player> rollingPlayers = new();
+        private readonly Dictionary<Player, DateTime> spawnTimes = new Dictionary<Player, DateTime>();
+        private readonly HashSet<Player> usedReroll = new HashSet<Player>();
+        private readonly HashSet<Player> rollingPlayers = new HashSet<Player>();
 
         public void Reset()
         {
@@ -36,7 +36,7 @@ namespace ScpReroll
             if (Plugin.Instance.Config.ShowHint)
             {
                 player.ShowHint(
-                    $"Type <b>.{Plugin.Instance.Config.CommandName}</b> to reroll your SCP.\nYou can bind it in console.\n{Plugin.Instance.Config.RerollTime}s available.",
+                    "Type <b>." + Plugin.Instance.Config.CommandName + "</b> to reroll your SCP.\nYou can bind it in console.\n" + Plugin.Instance.Config.RerollTime + "s available.",
                     Plugin.Instance.Config.RerollTime
                 );
             }
@@ -111,7 +111,7 @@ namespace ScpReroll
             rollingPlayers.Remove(player);
             spawnTimes.Remove(player);
 
-            player.ShowHint($"<b>You rerolled into {Utils.GetScpName(newRole)}</b>", 3f);
+            player.ShowHint("<b>You rerolled into " + Utils.GetScpName(newRole) + "</b>", 3f);
 
             return true;
         }
