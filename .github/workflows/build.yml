@@ -1,30 +1,38 @@
-name: Build ScpReroll
+name: Build and Release
 
 on:
   push:
+    branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore
-        run: dotnet restore ScpReroll/ScpReroll.csproj
-
-      - name: Build
-        run: dotnet build ScpReroll/ScpReroll.csproj -c Release --no-restore
-
-      - name: Upload DLL
-        uses: actions/upload-artifact@v4
-        with:
-          name: ScpReroll
-          path: ScpReroll/bin/Release/net48/ScpReroll.dll
+    - uses: actions/checkout@v4
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+    
+    - name: Restore NuGet packages
+      run: nuget restore ScpReroll/ScpReroll.csproj
+    
+    - name: Build with MSBuild
+      run: msbuild ScpReroll/ScpReroll.csproj /p:Configuration=Release /p:Platform="Any CPU"
+    
+    - name: Upload DLL to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./ScpReroll/bin/Release/net48/ScpReroll.dll
+        tag_name: v${{ github.run_number }}
+        name: Release v${{ github.run_number }}
+        body: |
+          Automated build from commit ${{ github.sha }}
+          
+          Download the DLL below and place it in your plugins folder.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
