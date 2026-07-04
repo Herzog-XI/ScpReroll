@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 
@@ -14,16 +13,11 @@ namespace ScpReroll
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Log.Info("[ScpReroll] Command used.");
-            Log.Info("[ScpReroll] Sender LogName: " + sender.LogName);
-            Log.Info("[ScpReroll] Sender Type: " + sender.GetType().FullName);
-
-            Player player = Player.List.FirstOrDefault(p => p.Nickname == sender.LogName);
+            Player player = Player.Get(sender);
 
             if (player == null)
             {
-                response = "Player not found. Server saw you as: " + sender.LogName;
-                Log.Warn("[ScpReroll] Player not found.");
+                response = "Only players can use this command.";
                 return false;
             }
 
